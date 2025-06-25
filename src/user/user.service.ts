@@ -18,7 +18,7 @@ export class UserService {
   ){}
 
   genAccToken(payload:{id:string, role:string}):string{
-    return this.jwt.sign(payload,{expiresIn:'15m'})
+    return this.jwt.sign(payload,{expiresIn:'7d'})
   }
 
   generateRefreshToken(payload:{id:string,role:string}):string {
