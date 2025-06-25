@@ -1,0 +1,141 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id        String   @id @default(uuid())
+  username  String
+  password  String
+  role UserRole
+  createdAt DateTime @default(now())
+}
+
+model Category {
+  id        Int      @id @default(autoincrement())
+  path      String
+  title     String
+  createdAt DateTime @default(now())
+}
+
+model Stack {
+  id        Int        @id @default(autoincrement())
+  name      String
+  image     String
+  createdAt DateTime   @default(now())
+  Teachers  Teachers[]
+  Groups    Group[]
+}
+
+model Region {
+  id        Int        @id @default(autoincrement())
+  name      String
+  createdAt DateTime   @default(now())
+  Teachers  Teachers[]
+  Students  Student[]
+}
+
+model Status {
+  id        Int        @id @default(autoincrement())
+  name      String
+  createdAt DateTime   @default(now())
+  Teachers  Teachers[]
+}
+
+model WorkList {
+  id        Int        @id @default(autoincrement())
+  name      String
+  createdAt DateTime   @default(now())
+  teachers  TeachersOnWorkCompanies[]
+}
+
+model TeachersOnWorkCompanies {
+  teacherId     String
+  workCompanyId Int
+
+  teacher       Teachers @relation(fields: [teacherId], references: [id])
+  workCompany   WorkList @relation(fields: [workCompanyId], references: [id])
+
+  @@id([teacherId, workCompanyId])
+}
+
+model Teachers {
+  id                   String   @id @default(uuid())
+  name                 String
+  surname              String
+  age                  Int
+  stack                Stack    @relation(fields: [stackId], references: [id])
+  stackId              Int
+  region               Region   @relation(fields: [regionId], references: [id])
+  regionId             Int
+  district             String
+  status               Status   @relation(fields: [statusId], references: [id])
+  statusId             Int
+  experience           String
+  gender               String
+  email                String
+  phone                String
+  isMerried            String
+  study                String
+  workCompanies        TeachersOnWorkCompanies[]
+  createdAt            DateTime @default(now())
+  mainGroups          Group[] @relation("MainTeachers")
+  supportGroups       Group[] @relation("SupportTeachers")
+}
+
+model Room {
+  id        Int      @id @default(autoincrement())
+  numberId  Int      @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  groups    Group[]
+}
+
+model Group {
+  id               Int        @id @default(autoincrement())
+  stack            Stack      @relation(fields: [stackId], references: [id])
+  stackId          Int
+  name             String
+  status           Boolean
+  mainTeachers     Teachers[] @relation("MainTeachers")
+  supportTeachers  Teachers[] @relation("SupportTeachers")
+  room             Room       @relation(fields: [roomId], references: [id])
+  roomId           Int
+  createdAt        DateTime   @default(now())
+  Students         Student[]
+}
+
+model Student {
+  id         Int      @id @default(autoincrement())
+  studentId  Int
+  name       String
+  surname    String
+  age        Int
+  group      Group    @relation(fields: [groupId], references: [id])
+  groupId    Int
+  region     Region   @relation(fields: [regionId], references: [id])
+  regionId   Int
+  district   String
+  study      String
+  phone      String
+  email      String
+  status     Boolean
+  createdAt  DateTime @default(now())
+}
+
+enum UserRole {
+  STUDENT
+  TEACHER
+  ADMIN
+  SUPERADMIN
+}
