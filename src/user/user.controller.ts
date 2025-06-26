@@ -15,9 +15,9 @@ import { RefreshTokenDto } from './dto/refreshtoken.dto';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Roles(UserRole.ADMIN,UserRole.SUPERADMIN)
-  @UseGuards(RoleGuard)
-  @UseGuards(AuthGuard)
+  // @Roles(UserRole.ADMIN,UserRole.SUPERADMIN)
+  // @UseGuards(RoleGuard)
+  // @UseGuards(AuthGuard)
   @Post('register')
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.register(createUserDto);
