@@ -25,16 +25,16 @@ import { RoleGuard } from 'src/guard/role.guard';
 export class StackController {
   constructor(private readonly stackService: StackService) {}
 
-  @Roles(UserRole.ADMIN,UserRole.SUPERADMIN)
-  @UseGuards(RoleGuard)
-  @UseGuards(AuthGuard)
+  // @Roles(UserRole.ADMIN,UserRole.SUPERADMIN)
+  // @UseGuards(RoleGuard)
+  // @UseGuards(AuthGuard)
   @Post()
   @ApiOperation({ summary: 'Yangi Stack yaratish' })
   async create(@Body() dto: CreateStackDto) {
     return this.stackService.create(dto);
   }
 
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   @Get()
   @ApiOperation({ summary: 'Stack ro‘yxati (filter, sort, pagination)' })
   @ApiQuery({ name: 'name', required: false, type: String })
@@ -46,16 +46,16 @@ export class StackController {
     return this.stackService.findAll(query);
   }
 
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   @Get(':id')
   @ApiOperation({ summary: 'Stackni olish' })
   async findOne(@Param('id', ParseIntPipe) id: number) {
     return this.stackService.findOne(id);
   }
 
-  @Roles(UserRole.ADMIN,UserRole.SUPERADMIN)
-  @UseGuards(RoleGuard)
-  @UseGuards(AuthGuard)
+  // @Roles(UserRole.ADMIN,UserRole.SUPERADMIN)
+  // @UseGuards(RoleGuard)
+  // @UseGuards(AuthGuard)
   @Patch(':id')
   @ApiOperation({ summary: 'Stackni yangilash' })
   async update(
@@ -65,9 +65,9 @@ export class StackController {
     return this.stackService.update(id, dto);
   }
 
-  @Roles(UserRole.ADMIN,UserRole.SUPERADMIN)
-  @UseGuards(RoleGuard)
-  @UseGuards(AuthGuard)
+  // @Roles(UserRole.ADMIN,UserRole.SUPERADMIN)
+  // @UseGuards(RoleGuard)
+  // @UseGuards(AuthGuard)
   @Delete(':id')
   @ApiOperation({ summary: 'Stackni o‘chirish' })
   async remove(@Param('id', ParseIntPipe) id: number) {
